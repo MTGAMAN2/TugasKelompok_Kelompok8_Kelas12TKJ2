@@ -1,36 +1,45 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ config('app.name') }} - @yield('title')</title>
+  @vite(['resources/css/app.css','resources/js/app.js'])
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="min-h-screen bg-gray-100">
+  <nav class="bg-white border-b">
+    <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+      <a href="{{ route('dashboard') }}" class="font-semibold">💰 MoneyWise</a>
+      <div class="flex gap-4">
+        <a href="{{ route('dashboard') }}">Dashboard</a>
+        <a href="{{ route('transactions.index') }}">Transaksi</a>
+        <a href="{{ route('wallets.index') }}">Wallet</a>
+        <a href="{{ route('categories.index') }}">Kategori</a>
+        <a href="{{ route('budgets.index') }}">Budgets</a>
+        <a href="{{ route('bills.index') }}">Bills</a>
+        <a href="{{ route('goals.index') }}">Goals</a>
+        <a href="{{ route('reports.index') }}">Reports</a>
+      </div>
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button class="text-red-600">Logout</button>
+      </form>
+    </div>
+  </nav>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+  <main class="mx-auto max-w-7xl p-6">
+    @if(session('success'))
+      <div class="mb-4 rounded bg-green-100 p-3 text-green-800">{{ session('success') }}</div>
+    @endif
+    @if($errors->any())
+      <div class="mb-4 rounded bg-red-100 p-3 text-red-800">
+        <ul class="list-disc list-inside">
+          @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
+        </ul>
+      </div>
+    @endif
+    @yield('content')
+  </main>
+</body>
 </html>

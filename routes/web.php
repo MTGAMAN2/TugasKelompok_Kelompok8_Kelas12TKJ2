@@ -1,31 +1,38 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WalletController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\BillController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\PurchaseController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
+})->middleware(['auth']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('wallets', WalletController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('transactions', TransactionController::class);
+    Route::resource('budgets', BudgetController::class);
+    Route::resource('bills', BillController::class);
+    Route::resource('goals', GoalController::class);
+    Route::resource('vendors', VendorController::class);
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/export', [ReportController::class, 'exportCsv'])->name('reports.export');
+
+    // Fitur: Beli barang → langsung potong saldo
+    Route::get('/purchase', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
