@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/export', [ReportController::class, 'exportCsv'])->name('reports.export');
+    Route::post('/goals/{goal}/contribute', [GoalController::class,'contribute'])->name('goals.contribute');
+    Route::post('wallets/transfer', [WalletController::class, 'transfer'])->name('wallets.transfer');
+
 
     // Fitur: Beli barang → langsung potong saldo
     Route::get('/purchase', [PurchaseController::class, 'create'])->name('purchase.create');

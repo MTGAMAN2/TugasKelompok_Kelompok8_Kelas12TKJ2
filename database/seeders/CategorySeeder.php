@@ -17,6 +17,7 @@ class CategorySeeder extends Seeder
             ['name'=>'Belanja','type'=>'expense'],
             ['name'=>'Tagihan','type'=>'expense'],
         ];
+        $categories = ['Makanan', 'Transportasi', 'Belanja', 'Tagihan', 'Hiburan'];
         foreach($defaults as $c){
             Category::create($c); // user_id null → global
         }

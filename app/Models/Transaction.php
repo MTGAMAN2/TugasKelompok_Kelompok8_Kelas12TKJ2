@@ -17,4 +17,5 @@ class Transaction extends Model
     public function wallet(){ return $this->belongsTo(Wallet::class); }
     public function category(){ return $this->belongsTo(Category::class); }
     public function vendor(){ return $this->belongsTo(Vendor::class); }
+
 }
