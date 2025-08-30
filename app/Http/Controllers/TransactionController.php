@@ -12,20 +12,16 @@ class TransactionController extends Controller
     public function index()
     {
         $wallets = Wallet::all();
-        $transactions = Transaction::with(['wallet', 'category'])->latest()->get(); 
-        return view('transactions.index', compact('wallets', 'transactions'));
+        $categories = Category::all();
+        $transactions = Transaction::with('wallet')->latest()->get();
+        return view('transactions.index', compact('wallets', 'categories', 'transactions'));
     }
 
     public function create()
     {
         $wallets = Wallet::all();
         $categories = Category::all(); 
-        return view('transactions.form', [
-            'isEdit' => false,
-            'wallets' => $wallets,
-            'categories' => $categories, 
-            'transaction' => null,
-        ]);
+        return view('transactions.index', compact('wallets', 'categories', 'transactions'));
     }
 
     public function store(Request $request)

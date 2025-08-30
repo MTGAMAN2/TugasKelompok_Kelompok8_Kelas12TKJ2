@@ -1,51 +1,51 @@
 @extends('layouts.app')
-@section('title','Dashboard')
+
 @section('content')
-<div class="grid md:grid-cols-3 gap-4">
-  <div class="bg-white p-4 rounded shadow">
-    <div class="text-sm text-gray-500">Pemasukan Bulan Ini</div>
-    <div class="text-2xl font-bold">Rp {{ number_format($income,0,',','.') }}</div>
-  </div>
-  <div class="bg-white p-4 rounded shadow">
-    <div class="text-sm text-gray-500">Pengeluaran Bulan Ini</div>
-    <div class="text-2xl font-bold">Rp {{ number_format($expense,0,',','.') }}</div>
-  </div>
-  <div class="bg-white p-4 rounded shadow">
-    <div class="text-sm text-gray-500">Selisih</div>
-    <div class="text-2xl font-bold">Rp {{ number_format($income - $expense,0,',','.') }}</div>
-  </div>
-</div>
+<div class="space-y-6">
 
-<div class="mt-6 bg-white p-4 rounded shadow">
-  <h2 class="font-semibold mb-2">Arus Kas 6 Bulan</h2>
-  <canvas id="cashflowChart" height="100"></canvas>
-</div>
+  <!-- Header -->
+  <div>
+    <h1 class="text-2xl font-bold">📊 Dashboard</h1>
+    <p class="text-gray-600 dark:text-gray-400">Ringkasan keuangan bulan ini</p>
+  </div>
 
-<div class="mt-6 bg-white p-4 rounded shadow">
-  <h2 class="font-semibold mb-2">Top Kategori Pengeluaran</h2>
-  <ul class="list-disc list-inside">
-    @forelse($topCategories as $row)
-      <li>{{ $row->name }} — Rp {{ number_format($row->total,0,',','.') }}</li>
-    @empty
-      <li>Belum ada data</li>
-    @endforelse
-  </ul>
-</div>
+  <!-- Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+      <h2 class="text-sm text-gray-500 dark:text-gray-400">Pemasukan Bulan Ini</h2>
+      <p class="text-2xl font-bold text-green-600">Rp {{ number_format($income ?? 0) }}</p>
+    </div>
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+      <h2 class="text-sm text-gray-500 dark:text-gray-400">Pengeluaran Bulan Ini</h2>
+      <p class="text-2xl font-bold text-red-600">Rp {{ number_format($expense ?? 0) }}</p>
+    </div>
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+      <h2 class="text-sm text-gray-500 dark:text-gray-400">Selisih</h2>
+      <p class="text-2xl font-bold text-blue-600">Rp {{ number_format(($income ?? 0) - ($expense ?? 0)) }}</p>
+    </div>
+  </div>
 
-<script>
-fetch('{{ url('/api/chart/summary') }}', {headers: {'X-Requested-With':'XMLHttpRequest'}})
-  .then(r=>r.json())
-  .then(data=>{
-    const labels = Object.keys(data);
-    const income = labels.map(k=>data[k].income);
-    const expense = labels.map(k=>data[k].expense);
-    new Chart(document.getElementById('cashflowChart'),{
-      type:'line',
-      data:{ labels, datasets:[
-        { label:'Income', data:income },
-        { label:'Expense', data:expense }
-      ]}
-    });
-  });
-</script>
+  <!-- Grafik Placeholder -->
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+    <h2 class="text-lg font-bold mb-4">📈 Arus Kas 6 Bulan</h2>
+    <div class="h-64 flex items-center justify-center text-gray-400 dark:text-gray-600">
+      (Grafik Arus Kas di sini)
+    </div>
+  </div>
+
+  <!-- Top Kategori -->
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+    <h2 class="text-lg font-bold mb-4">🏷 Top Kategori Pengeluaran</h2>
+    @if(empty($topCategories))
+      <p class="text-gray-500 dark:text-gray-400">Belum ada data</p>
+    @else
+      <ul class="list-disc list-inside">
+        @foreach($topCategories as $category)
+          <li>{{ $category->name }} - Rp {{ number_format($category->amount) }}</li>
+        @endforeach
+      </ul>
+    @endif
+  </div>
+
+</div>
 @endsection

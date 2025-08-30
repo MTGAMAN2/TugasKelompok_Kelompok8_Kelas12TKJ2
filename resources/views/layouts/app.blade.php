@@ -1,36 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ $title ?? 'MoneyWise' }}</title>
   @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 <div class="min-h-screen flex">
   <!-- Sidebar -->
-  <aside class="w-64 bg-blue-800 text-white flex flex-col">
-    <div class="p-4 text-xl font-bold border-b border-blue-600">MoneyWise</div>
-    <nav class="flex-1 p-4 space-y-2">
-      <a href="{{ route('dashboard') }}" class="block hover:text-yellow-300">🏠 Dashboard</a>
-      <a href="{{ route('transactions.index') }}" class="block hover:text-yellow-300">💳 Transactions</a>
-      <a href="{{ route('wallets.index') }}" class="block hover:text-yellow-300">👛 Wallets</a>
-      <a href="{{ route('categories.index') }}" class="block hover:text-yellow-300">🏷 Categories</a>
-      <a href="{{ route('budgets.index') }}" class="block hover:text-yellow-300">📊 Budgets</a>
-      <a href="{{ route('goals.index') }}" class="block hover:text-yellow-300">🎯 Goals</a>
-      <a href="{{ route('reports.index') }}" class="block hover:text-yellow-300">📈 Reports</a>
-      <a href="{{ route('purchase.create') }}" class="block hover:text-yellow-300">🛒 Quick Purchase</a>
+  <aside class="w-64 bg-gradient-to-b from-purple-700 to-indigo-800 dark:from-gray-800 dark:to-gray-900 text-white flex flex-col shadow-lg">
+    <div class="p-4 text-2xl font-extrabold tracking-wide border-b border-purple-600">
+      🚀 MoneyWise
+    </div>
+
+    <nav class="flex-1 p-4 space-y-3 text-sm font-medium">
+      <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🏠 Dashboard</a>
+      <a href="{{ route('transactions.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">💳 Transactions</a>
+      <a href="{{ route('wallets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">👛 Wallets</a>
+      <a href="{{ route('categories.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🏷 Categories</a>
+      <a href="{{ route('budgets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">📊 Budgets</a>
+      <a href="{{ route('goals.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🎯 Goals</a>
+      <a href="{{ route('reports.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">📈 Reports</a>
+      <a href="{{ route('purchase.create') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🛒 Quick Purchase</a>
     </nav>
-    <div class="p-4 border-t border-blue-600">
+
+    <!-- Footer -->
+    <div class="p-4 border-t border-purple-600 flex justify-between items-center">
       <form method="POST" action="{{ route('logout') }}">@csrf
-        <button class="w-full text-left">🚪 Log out</button>
+        <button class="px-3 py-2 rounded bg-red-600 hover:bg-red-700 w-full text-center">🚪 Log out</button>
       </form>
+      <button id="theme-toggle" class="ml-2 px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 dark:text-gray-100">🌙</button>
     </div>
   </aside>
 
-  <main class="flex-1 p-6">
+  <!-- Main Content -->
+  <main class="flex-1 p-6 overflow-y-auto">
     <x-flash />
     @yield('content')
   </main>
 </div>
+
+<!-- Dark Mode Toggle Script -->
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  toggle.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    if (html.classList.contains('dark')) {
+      localStorage.setItem('theme', 'dark');
+      toggle.textContent = '☀️';
+    } else {
+      localStorage.setItem('theme', 'light');
+      toggle.textContent = '🌙';
+    }
+  });
+
+  if (localStorage.getItem('theme') === 'dark') {
+    html.classList.add('dark');
+    toggle.textContent = '☀️';
+  } else {
+    html.classList.remove('dark');
+    toggle.textContent = '🌙';
+  }
+</script>
 </body>
 </html>
