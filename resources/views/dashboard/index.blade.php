@@ -21,7 +21,7 @@
     </div>
     <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
       <h2 class="text-sm text-gray-500 dark:text-gray-400">Selisih</h2>
-      <p class="text-2xl font-bold text-blue-600">Rp {{ number_format(($income ?? 0) - ($expense ?? 0)) }}</p>
+      <p class="text-2xl font-bold text-yellow-600">Rp {{ number_format(($income ?? 0) - ($expense ?? 0)) }}</p>
     </div>
   </div>
 

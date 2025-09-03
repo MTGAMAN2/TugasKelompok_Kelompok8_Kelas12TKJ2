@@ -4,6 +4,7 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ $title ?? 'MoneyWise' }}</title>
   @vite(['resources/css/app.css','resources/js/app.js'])
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 <div class="min-h-screen flex">
@@ -14,11 +15,11 @@
     </div>
 
     <nav class="flex-1 p-4 space-y-3 text-sm font-medium">
-      <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🏠 Dashboard</a>
-      <a href="{{ route('transactions.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">💳 Transactions</a>
-      <a href="{{ route('wallets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">👛 Wallets</a>
-      <a href="{{ route('categories.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🏷 Categories</a>
-      <a href="{{ route('budgets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">📊 Budgets</a>
+      <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ route('transactions.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-credit-card"></i> Transactions</a>
+      <a href="{{ route('wallets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-wallet"></i> Wallets</a>
+      <a href="{{ route('categories.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-tag"></i> Categories</a>
+      <a href="{{ route('budgets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-clipboard-data"></i> Budgets</a>
       <a href="{{ route('goals.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🎯 Goals</a>
       <a href="{{ route('reports.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">📈 Reports</a>
       <a href="{{ route('purchase.create') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🛒 Quick Purchase</a>
@@ -64,5 +65,6 @@
     toggle.textContent = '🌙';
   }
 </script>
+
 </body>
 </html>

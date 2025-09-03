@@ -52,7 +52,7 @@
       <!-- Submit -->
       <div class="md:col-span-2">
         <button class="w-full px-5 py-3 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:opacity-90 text-white font-semibold shadow-lg">
-          ✅ Bayar & Potong Saldo
+          Bayar
         </button>
       </div>
     </form>
