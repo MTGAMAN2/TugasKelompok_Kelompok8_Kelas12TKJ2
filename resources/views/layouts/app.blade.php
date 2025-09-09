@@ -19,10 +19,10 @@
       <a href="{{ route('transactions.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-credit-card"></i> Transactions</a>
       <a href="{{ route('wallets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-wallet"></i> Wallets</a>
       <a href="{{ route('categories.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-tag"></i> Categories</a>
-      <a href="{{ route('budgets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-clipboard-data"></i> Budgets</a>
-      <a href="{{ route('goals.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🎯 Goals</a>
-      <a href="{{ route('reports.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">📈 Reports</a>
-      <a href="{{ route('purchase.create') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700">🛒 Quick Purchase</a>
+      <a href="{{ route('budgets.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-graph-up-arrow"></i></i> Budgets</a>
+      <a href="{{ route('goals.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-bullseye"></i>  Goals</a>
+      <a href="{{ route('reports.index') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-clipboard-data"></i> Reports</a>
+      <a href="{{ route('purchase.create') }}" class="block px-3 py-2 rounded hover:bg-purple-600 dark:hover:bg-gray-700"><i class="bi bi-cart3"></i> Quick Purchase </a>
     </nav>
 
     <!-- Footer -->
