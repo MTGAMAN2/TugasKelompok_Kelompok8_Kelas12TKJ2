@@ -1,4 +1,4 @@
-MoneyWise 
+MoneyWise :
 Aplikasi web berbasis Laravel untuk mengelola keuangan pribadi dengan fitur kategori, tujuan (goals), dan pencatatan transaksi.
 
 Deskripsi singkat :  
