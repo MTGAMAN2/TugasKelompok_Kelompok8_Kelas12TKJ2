@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content-body')
 @php $isEdit = isset($category); @endphp
 <div class="container mx-auto px-4">
     <div class="flex items-center justify-between mb-6">

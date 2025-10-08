@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\WalletController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\BudgetController;
@@ -14,6 +14,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Auth\RegisterController; 
 use App\Http\Controllers\Auth\LoginController;    
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\WalletController; 
 
 // Landing page (public)
 Route::get('/', function () {
@@ -56,4 +58,14 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
     // Purchase → langsung potong saldo
     Route::get('/purchase', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+
+    Route::get('/profile', function () {
+    return view('profile.index'); 
+    })->name('profile.index');
+
+    Route::get('/settings', function () {
+    return view('settings.index'); // pastikan file ini ada
+    })->name('settings.index');
+
+
 });

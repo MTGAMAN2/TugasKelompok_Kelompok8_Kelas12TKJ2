@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title','🛒 Beli Barang')
 
-@section('content')
+@section('content-body')
 <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
     <h1 class="text-2xl font-bold mb-6 text-purple-600 dark:text-purple-400">🛒 Beli Barang</h1>
 

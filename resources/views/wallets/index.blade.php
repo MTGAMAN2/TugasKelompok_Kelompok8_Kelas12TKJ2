@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content-body')
 <div class="px-6 py-4">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">💳 Wallets</h1>
 
@@ -102,3 +102,5 @@
     </div>
 </div>
 @endsection
+
+

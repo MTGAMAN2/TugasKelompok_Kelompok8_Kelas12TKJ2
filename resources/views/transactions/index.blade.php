@@ -1,6 +1,7 @@
+
 @extends('layouts.app')
 
-@section('content')
+@section('content-body')
 <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
     <h2 class="text-2xl font-bold mb-6 text-purple-600 dark:text-purple-400">📑 Daftar Transaksi</h2>
 
@@ -26,13 +27,7 @@
         <div>
             <label class="block text-sm font-medium mb-1">🏷 Kategori</label>
             <select name="category_id" class="w-full rounded p-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" required>
-                <option value="">-- Pilih --</option>
-                <option value="food">Makanan</option>
-                <option value="transport">Transportasi</option>
-                <option value="shopping">Belanja</option>
-                <option value="salary">Gaji</option>
-                <option value="gift">Hadiah</option>
-                <option value="other">Lainnya</option>
+                
                 @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
@@ -90,7 +85,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('amountIndex');
 
-    // Format input saat diketik menjadi Rp xxx.xxx
     input.addEventListener('input', function (e) {
         let value = e.target.value.replace(/[^0-9]/g, '');
         if (value) {
@@ -100,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Saat submit, kirim hanya angka ke backend
     const form = input.closest('form');
     form.addEventListener('submit', function () {
         input.value = input.value.replace(/[^0-9]/g, '');

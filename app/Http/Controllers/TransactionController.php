@@ -25,22 +25,34 @@ class TransactionController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'wallet_id'   => 'required|exists:wallets,id',
-            'category_id' => 'required|exists:categories,id', 
-            'type'        => 'required|in:income,expense',
-            'amount'      => 'required',
-            'description' => 'nullable|string',
-        ]);
+{
+    $data = $request->validate([
+        'wallet_id'   => 'required|exists:wallets,id',
+        'category_id' => 'required|exists:categories,id',
+        'type'        => 'required|in:income,expense',
+        'amount'      => 'required',
+        'description' => 'nullable|string',
+        'transacted_at' => 'nullable|date', 
+    ]);
 
-        
-        $data['amount'] = preg_replace('/[^0-9]/', '', $data['amount']);
+    $wallet = Wallet::findOrFail($data['wallet_id']);
+    $amount = preg_replace('/[^0-9]/', '', $data['amount']);
+    $data['amount'] = $amount;
+    $data['user_id'] = auth()->id(); // associate user
+    $data['transacted_at'] = $data['transacted_at'] ?? now(); 
 
-        Transaction::create($data);
+    $transaction = Transaction::create($data);
 
-        return redirect()->route('transactions.index')->with('success', 'Transaction added!');
+    if ($data['type'] === 'income') {
+        $wallet->balance += $amount;
+    } else {
+        $wallet->balance -= $amount;
     }
+
+    $wallet->save();
+
+    return redirect()->route('transactions.index')->with('success', 'Transaction added and wallet updated!');
+}
 
     public function edit(Transaction $transaction)
     {
@@ -55,21 +67,41 @@ class TransactionController extends Controller
     }
 
     public function update(Request $request, Transaction $transaction)
-    {
-        $data = $request->validate([
-            'wallet_id'   => 'required|exists:wallets,id',
-            'category_id' => 'required|exists:categories,id', 
-            'type'        => 'required|in:income,expense',
-            'amount'      => 'required',
-            'description' => 'nullable|string',
-        ]);
+{
+    $data = $request->validate([
+        'wallet_id'   => 'required|exists:wallets,id',
+        'category_id' => 'required|exists:categories,id',
+        'type'        => 'required|in:income,expense',
+        'amount'      => 'required',
+        'description' => 'nullable|string',
+    ]);
 
-        $data['amount'] = preg_replace('/[^0-9]/', '', $data['amount']);
+    $wallet = Wallet::findOrFail($data['wallet_id']);
+    $oldAmount = $transaction->amount;
+    $newAmount = preg_replace('/[^0-9]/', '', $data['amount']);
 
-        $transaction->update($data);
-
-        return redirect()->route('transactions.index')->with('success', 'Transaction updated!');
+    if ($transaction->type === 'income') {
+        $wallet->balance -= $oldAmount;
+    } else {
+        $wallet->balance += $oldAmount;
     }
+
+    $transaction->update([
+        ...$data,
+        'amount' => $newAmount,
+    ]);
+
+    if ($data['type'] === 'income') {
+        $wallet->balance += $newAmount;
+    } else {
+        $wallet->balance -= $newAmount;
+    }
+
+    $wallet->save();
+
+    return redirect()->route('transactions.index')->with('success', 'Transaction updated and wallet recalculated!');
+}
+
 
     public function destroy(Transaction $transaction)
     {
