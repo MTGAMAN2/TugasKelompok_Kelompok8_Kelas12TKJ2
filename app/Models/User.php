@@ -40,6 +40,11 @@ class User extends Authenticatable
 {
     return $this->hasMany(\App\Models\Wallet::class);
 }
+
+public function categories()
+{
+    return $this->hasMany(Category::class);
+}
 }
 
 

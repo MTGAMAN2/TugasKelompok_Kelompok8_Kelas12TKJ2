@@ -36,7 +36,7 @@
                             <option value="{{ $wallet->id }}">{{ $wallet->name }} (Rp{{ number_format($wallet->balance,0) }})</option>
                         @endforeach
                     </select>
-                    <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded">Contribute</button>
+                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded">Contribute</button>
                 </form>
                 <form action="{{ route('goals.destroy', $goal->id) }}" method="POST" onsubmit="retur confirm('Are you sure you want to delete this goal?')"class="mt-2">
                     @csrf

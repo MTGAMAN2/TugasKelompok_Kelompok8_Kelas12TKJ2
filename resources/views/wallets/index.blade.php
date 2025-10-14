@@ -23,7 +23,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input class="border rounded px-2 py-1 dark:bg-gray-900 dark:text-gray-100" 
-                                       type="text" name="name" value="{{ $w->name }}">
+                                        type="text" name="name" value="{{ $w->name }}">
                                 <button class="text-indigo-600 font-medium hover:underline">Save</button>
                             </form>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -31,7 +31,7 @@
                             </p>
                         </div>
                         <form method="POST" action="{{ route('wallets.destroy',$w) }}" 
-                              onsubmit="return confirm('Hapus wallet ini?')">
+                                onsubmit="return confirm('Hapus wallet ini?')">
                             @csrf @method('DELETE')
                             <button class="text-red-600 hover:underline">Hapus</button>
                         </form>
@@ -95,7 +95,7 @@
                         <label class="block text-sm mb-1">Catatan</label>
                         <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" name="note">
                     </div>
-                    <button class="w-full bg-purple-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Transfer</button>
+                    <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Transfer</button>
                 </form>
             </div>
         </div>

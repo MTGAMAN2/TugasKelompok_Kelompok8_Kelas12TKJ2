@@ -4,108 +4,164 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Models\Category; 
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
     public function index()
     {
-        $wallets = Wallet::all();
-        $categories = Category::all();
-        $transactions = Transaction::with('wallet')->latest()->get();
+        $userId = Auth::id();
+
+        $wallets = Wallet::where('user_id', $userId)->get();
+        $categories = Category::where('user_id', $userId)->get();
+
+        $transactions = Transaction::with(['wallet', 'category'])
+            ->where('user_id', $userId)
+            ->latest()
+            ->get();
+
         return view('transactions.index', compact('wallets', 'categories', 'transactions'));
     }
 
     public function create()
     {
-        $wallets = Wallet::all();
-        $categories = Category::all(); 
-        return view('transactions.index', compact('wallets', 'categories', 'transactions'));
+        $userId = Auth::id();
+
+        $wallets = Wallet::where('user_id', $userId)->get();
+        $categories = Category::where('user_id', $userId)->get();
+
+        return view('transactions.form', [
+            'isEdit' => false,
+            'wallets' => $wallets,
+            'categories' => $categories,
+            'transaction' => null,
+        ]);
     }
 
     public function store(Request $request)
-{
-    $data = $request->validate([
-        'wallet_id'   => 'required|exists:wallets,id',
-        'category_id' => 'required|exists:categories,id',
-        'type'        => 'required|in:income,expense',
-        'amount'      => 'required',
-        'description' => 'nullable|string',
-        'transacted_at' => 'nullable|date', 
-    ]);
+    {
+        $userId = Auth::id();
 
-    $wallet = Wallet::findOrFail($data['wallet_id']);
-    $amount = preg_replace('/[^0-9]/', '', $data['amount']);
-    $data['amount'] = $amount;
-    $data['user_id'] = auth()->id(); // associate user
-    $data['transacted_at'] = $data['transacted_at'] ?? now(); 
+        $data = $request->validate([
+            'wallet_id'   => 'required|exists:wallets,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'type'        => 'required|in:income,expense',
+            'amount'      => 'required',
+            'description' => 'nullable|string',
+            'transacted_at' => 'nullable|date',
+        ]);
 
-    $transaction = Transaction::create($data);
+        $wallet = Wallet::where('id', $data['wallet_id'])
+            ->where('user_id', $userId)
+            ->firstOrFail();
 
-    if ($data['type'] === 'income') {
-        $wallet->balance += $amount;
-    } else {
-        $wallet->balance -= $amount;
+        if (!empty($data['category_id'])) {
+            $category = Category::where('id', $data['category_id'])
+                ->where('user_id', $userId)
+                ->firstOrFail();
+        }
+
+        $amount = preg_replace('/[^0-9]/', '', $data['amount']);
+        $data['amount'] = $amount;
+        $data['user_id'] = $userId;
+        $data['transacted_at'] = $data['transacted_at'] ?? now();
+
+        $transaction = Transaction::create($data);
+
+        if ($data['type'] === 'income') {
+            $wallet->balance += $amount;
+        } else {
+            $wallet->balance -= $amount;
+        }
+        $wallet->save();
+
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan!');
     }
-
-    $wallet->save();
-
-    return redirect()->route('transactions.index')->with('success', 'Transaction added and wallet updated!');
-}
 
     public function edit(Transaction $transaction)
     {
-        $wallets = Wallet::all();
-        $categories = Category::all(); 
+        $userId = Auth::id();
+        abort_if($transaction->user_id !== $userId, 403);
+
+        $wallets = Wallet::where('user_id', $userId)->get();
+        $categories = Category::where('user_id', $userId)->get();
+
         return view('transactions.form', [
             'isEdit' => true,
             'wallets' => $wallets,
-            'categories' => $categories, 
+            'categories' => $categories,
             'transaction' => $transaction,
         ]);
     }
 
     public function update(Request $request, Transaction $transaction)
-{
-    $data = $request->validate([
-        'wallet_id'   => 'required|exists:wallets,id',
-        'category_id' => 'required|exists:categories,id',
-        'type'        => 'required|in:income,expense',
-        'amount'      => 'required',
-        'description' => 'nullable|string',
-    ]);
+    {
+        $userId = Auth::id();
+        abort_if($transaction->user_id !== $userId, 403);
 
-    $wallet = Wallet::findOrFail($data['wallet_id']);
-    $oldAmount = $transaction->amount;
-    $newAmount = preg_replace('/[^0-9]/', '', $data['amount']);
+        $data = $request->validate([
+            'wallet_id'   => 'required|exists:wallets,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'type'        => 'required|in:income,expense',
+            'amount'      => 'required',
+            'description' => 'nullable|string',
+        ]);
 
-    if ($transaction->type === 'income') {
-        $wallet->balance -= $oldAmount;
-    } else {
-        $wallet->balance += $oldAmount;
+        $wallet = Wallet::where('id', $data['wallet_id'])
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
+        if (!empty($data['category_id'])) {
+            $category = Category::where('id', $data['category_id'])
+                ->where('user_id', $userId)
+                ->firstOrFail();
+        }
+
+        if ($transaction->type === 'income') {
+            $wallet->balance -= $transaction->amount;
+        } else {
+            $wallet->balance += $transaction->amount;
+        }
+
+        $newAmount = preg_replace('/[^0-9]/', '', $data['amount']);
+        $transaction->update([
+            ...$data,
+            'amount' => $newAmount,
+        ]);
+
+        if ($data['type'] === 'income') {
+            $wallet->balance += $newAmount;
+        } else {
+            $wallet->balance -= $newAmount;
+        }
+
+        $wallet->save();
+
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil diperbarui!');
     }
-
-    $transaction->update([
-        ...$data,
-        'amount' => $newAmount,
-    ]);
-
-    if ($data['type'] === 'income') {
-        $wallet->balance += $newAmount;
-    } else {
-        $wallet->balance -= $newAmount;
-    }
-
-    $wallet->save();
-
-    return redirect()->route('transactions.index')->with('success', 'Transaction updated and wallet recalculated!');
-}
-
 
     public function destroy(Transaction $transaction)
     {
+        $userId = Auth::id();
+        abort_if($transaction->user_id !== $userId, 403);
+
+        $wallet = Wallet::where('id', $transaction->wallet_id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($wallet) {
+            if ($transaction->type === 'income') {
+                $wallet->balance -= $transaction->amount;
+            } else {
+                $wallet->balance += $transaction->amount;
+            }
+            $wallet->save();
+        }
+
         $transaction->delete();
-        return redirect()->route('transactions.index')->with('success', 'Transaction deleted!');
+
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil dihapus!');
     }
 }

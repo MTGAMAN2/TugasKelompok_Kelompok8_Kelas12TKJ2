@@ -49,8 +49,6 @@ class GoalController extends Controller
             'wallet_id' => 'required|exists:wallets,id'
         ]);
 
-         $goal->increment('current_amount', $request->amount);
-
         $wallet = Wallet::where('id', $request->wallet_id)
                         ->where('user_id', Auth::id())
                         ->firstOrFail();
@@ -62,8 +60,7 @@ class GoalController extends Controller
         $wallet->balance -= $request->amount;
         $wallet->save();
 
-        $goal->current_amount += $request->amount;
-        $goal->save();
+        $goal->increment('current_amount', $request->amount);
 
         return redirect()->route('goals.index')->with('success', 'Contribution added successfully!');
     }
