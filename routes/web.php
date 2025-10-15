@@ -43,7 +43,6 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
     Route::resource('bills', BillController::class);
     Route::resource('goals', GoalController::class);
-    Route::resource('vendors', VendorController::class);
 
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

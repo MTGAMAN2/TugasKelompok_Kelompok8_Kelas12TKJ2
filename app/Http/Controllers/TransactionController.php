@@ -15,7 +15,10 @@ class TransactionController extends Controller
         $userId = Auth::id();
 
         $wallets = Wallet::where('user_id', $userId)->get();
-        $categories = Category::where('user_id', $userId)->get();
+        $categories = Category::where(function ($query) use ($userId) {
+        $query->where('user_id', $userId)
+              ->orWhereNull('user_id');
+        })->get();
 
         $transactions = Transaction::with(['wallet', 'category'])
             ->where('user_id', $userId)
@@ -30,7 +33,10 @@ class TransactionController extends Controller
         $userId = Auth::id();
 
         $wallets = Wallet::where('user_id', $userId)->get();
-        $categories = Category::where('user_id', $userId)->get();
+        $categories = Category::where(function ($query) use ($userId) {
+        $query->where('user_id', $userId)
+              ->orWhereNull('user_id');
+        })->get();
 
         return view('transactions.form', [
             'isEdit' => false,

@@ -55,8 +55,9 @@
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Saldo Awal</label>
-                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" 
-                               type="number" step="0.01" name="balance">
+                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input"
+                        type="text" name="balance">
+
                     </div>
                     <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Create</button>
                 </form>
@@ -85,7 +86,9 @@
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Jumlah</label>
-                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" type="number" step="0.01" name="amount" required>
+                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input" 
+                        type="text" name="balance">
+
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Tanggal</label>
@@ -103,4 +106,29 @@
 </div>
 @endsection
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('.rupiah-input');
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+                e.target.value = 'Rp ' + value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            } else {
+                e.target.value = '';
+            }
+        });
+
+        const form = input.closest('form');
+        if (form) {
+            form.addEventListener('submit', function () {
+                input.value = input.value.replace(/[^0-9]/g, '');
+            });
+        }
+    });
+});
+</script>
+@endpush
 

@@ -23,7 +23,7 @@
                 <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">
                     Nama Wallet <span class="text-red-500">*</span>
                 </label>
-                <input type="text" name="name" 
+                <input type="text" id="amountIndex" name="name" 
                        class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:text-gray-100"
                        value="{{ $isEdit ? $wallet->name : old('name') }}" required>
             </div>
@@ -33,7 +33,7 @@
                 <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">
                     Saldo Awal
                 </label>
-                <input type="number" step="0.01" name="balance"
+                <input type="text" id="amountIndex"  name="balance"
                        class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900 dark:text-gray-100"
                        value="{{ old('balance',0) }}">
             </div>
@@ -49,3 +49,24 @@
 </div>
 @endsection
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('amountIndex');
+
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value) {
+            e.target.value = 'Rp ' + value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        } else {
+            e.target.value = '';
+        }
+    });
+
+    const form = input.closest('form');
+    form.addEventListener('submit', function () {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    });
+});
+</script>
+@endpush
