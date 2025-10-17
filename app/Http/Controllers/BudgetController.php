@@ -15,7 +15,9 @@ class BudgetController extends Controller
             ->where('user_id', Auth::id())
             ->get();
 
-        return view('budgets.index', compact('budgets'));
+         $categories = Category::all();
+
+        return view('budgets.index', compact('budgets', 'categories'));
     }
 
     public function create()

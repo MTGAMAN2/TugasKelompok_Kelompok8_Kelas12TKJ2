@@ -3,7 +3,7 @@
 
 @section('content-body')
 <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-    <h1 class="text-2xl font-bold mb-6 text-purple-600 dark:text-purple-400">🛒 Beli Barang</h1>
+    <h1 class="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">🛒 Beli Barang</h1>
 
     <form method="POST" action="{{ route('purchase.store') }}" class="grid md:grid-cols-2 gap-6">
       @csrf
@@ -51,7 +51,7 @@
 
       <!-- Submit -->
       <div class="md:col-span-2">
-        <button class="w-full px-5 py-3 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:opacity-90 text-white font-semibold shadow-lg">
+        <button class="w-full px-5 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-teal-500 hover:opacity-90 text-white font-semibold shadow-lg">
           Bayar
         </button>
       </div>

@@ -1,40 +1,63 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content-body')
 <div class="container mx-auto px-4">
     <h1 class="text-2xl font-semibold mb-4">Reports</h1>
 
-    <form class="bg-white rounded shadow p-4 mb-6 grid md:grid-cols-4 gap-3">
+    {{-- Filter Form --}}
+    <form method="GET" action="{{ route('reports.index') }}" class="bg-white rounded shadow p-4 mb-6 grid md:grid-cols-4 gap-3">
+        @php
+            $year = $year ?? now()->year;
+            $month = $month ?? now()->month;
+        @endphp
+
         <select name="year" class="border rounded px-3 py-2" onchange="this.form.submit()">
             @for($y = now()->year - 3; $y <= now()->year + 1; $y++)
-                <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
+                <option value="{{ $y }}" @selected($year == $y)>{{ $y }}</option>
             @endfor
         </select>
+
         <select name="month" class="border rounded px-3 py-2" onchange="this.form.submit()">
-            @for($m=1;$m<=12;$m++)
-                <option value="{{ $m }}" @selected($month==$m)>{{ \Carbon\Carbon::create()->month($m)->format('F') }}</option>
+            @for($m = 1; $m <= 12; $m++)
+                <option value="{{ $m }}" @selected($month == $m)>
+                    {{ \Carbon\Carbon::create()->month($m)->format('F') }}
+                </option>
             @endfor
         </select>
-        <a href="{{ route('reports.export', ['from'=>\Carbon\Carbon::create($year,$month,1)->startOfMonth()->toDateString(),'to'=>\Carbon\Carbon::create($year,$month,1)->endOfMonth()->toDateString()]) }}" class="px-4 py-2 bg-gray-800 text-white rounded">Export CSV</a>
+
+        {{-- Export CSV --}}
+        <a href="{{ route('reports.exportCsv') }}"
+           class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded text-center">
+           Export CSV
+        </a>
+
+        {{-- Print / Save as PDF --}}
+        <a href="{{ route('reports.print', ['year' => $year, 'month' => $month]) }}" target="_blank"
+           class="px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded text-center">
+           Print / Save as PDF
+        </a>
     </form>
 
+    {{-- Charts --}}
     <div class="grid md:grid-cols-2 gap-6">
         <div class="bg-white rounded shadow p-4">
             <h3 class="font-semibold mb-2">Income vs Expense ({{ $year }})</h3>
             <canvas id="lineChart" height="160"></canvas>
         </div>
         <div class="bg-white rounded shadow p-4">
-            <h3 class="font-semibold mb-2">Expense by Category ({{ \Carbon\Carbon::create()->month($month)->format('F') }} {{ $year }})</h3>
+            <h3 class="font-semibold mb-2">
+                Expense by Category ({{ \Carbon\Carbon::create()->month($month)->format('F') }} {{ $year }})
+            </h3>
             <canvas id="pieChart" height="160"></canvas>
         </div>
     </div>
 </div>
 
-{{-- Chart.js CDN (ringan, tanpa setup Vite) --}}
+{{-- Chart.js CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const monthly = @json($monthly);
-const labels = monthly.map(m => new Date(0, m.month-1).toLocaleString('en',{month:'short'}));
+const monthly = @json($monthly ?? []);
+const labels = monthly.map(m => new Date(0, m.month - 1).toLocaleString('en', {month: 'short'}));
 const income = monthly.map(m => Number(m.income));
 const expense = monthly.map(m => Number(m.expense));
 
@@ -43,13 +66,13 @@ new Chart(document.getElementById('lineChart'), {
   data: {
     labels,
     datasets: [
-      { label: 'Income', data: income },
-      { label: 'Expense', data: expense }
+      { label: 'Income', data: income, backgroundColor: 'rgba(34,197,94,0.7)' },
+      { label: 'Expense', data: expense, backgroundColor: 'rgba(239,68,68,0.7)' }
     ]
   }
 });
 
-const cat = @json($category);
+const cat = @json($category ?? []);
 new Chart(document.getElementById('pieChart'), {
   type: 'pie',
   data: {

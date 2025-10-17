@@ -41,13 +41,15 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
     // Budget 
     Route::resource('budgets', BudgetController::class)->only(['index','create','store','destroy']);
 
-    Route::resource('bills', BillController::class);
     Route::resource('goals', GoalController::class);
 
     // Reports
+    Route::middleware(['auth'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/export', [ReportController::class, 'exportCsv'])->name('reports.export');
-
+    Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
+    Route::get('/reports/export-csv', [ReportController::class, 'exportCsv'])->name('reports.exportCsv');
+    });
+    
     // Goals contribute
     Route::post('/goals/{goal}/contribute', [GoalController::class,'contribute'])->name('goals.contribute');
 
