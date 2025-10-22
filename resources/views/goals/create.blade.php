@@ -7,7 +7,7 @@
     <form method="POST" action="{{ route('goals.store') }}" class="space-y-4">
         @csrf
         <input type="text" name="name" placeholder="Goal Name" class="w-full px-3 py-2 rounded text-black">
-        <input type="number" name="target_amount" placeholder="Target Amount" class="w-full px-3 py-2 rounded text-black">
+        <input type="text" id="amountIndex" name="target_amount" placeholder="Target Amount" class="w-full px-3 py-2 rounded text-black">
         <input type="date" name="deadline" class="w-full px-3 py-2 rounded text-black">
         <select name="priority" class="w-full px-3 py-2 rounded text-black">
             <option value="low">Low</option>
@@ -18,3 +18,25 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('amountIndex');
+
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value) {
+            e.target.value = 'Rp ' + value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        } else {
+            e.target.value = '';
+        }
+    });
+
+    const form = input.closest('form');
+    form.addEventListener('submit', function () {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    });
+});
+</script>
+@endpush

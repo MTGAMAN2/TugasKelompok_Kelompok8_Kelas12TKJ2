@@ -30,7 +30,7 @@
 
                 <form action="{{ route('goals.contribute', $goal->id) }}" method="POST" class="mt-3 flex space-x-2">
                     @csrf
-                    <input type="number" name="amount" placeholder="Amount" class="px-3 py-2 rounded text-black" required>
+                    <input type="text" id="amountIndex" name="amount" placeholder="Amount" class="px-3 py-2 rounded text-black" required>
                     <select name="wallet_id" class="px-2 py-1 rounded text-black">
                         @foreach(Auth::user()->wallets as $wallet)
                             <option value="{{ $wallet->id }}">{{ $wallet->name }} (Rp{{ number_format($wallet->balance,0) }})</option>
@@ -49,3 +49,25 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('amountIndex');
+
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value) {
+            e.target.value = 'Rp ' + value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        } else {
+            e.target.value = '';
+        }
+    });
+
+    const form = input.closest('form');
+    form.addEventListener('submit', function () {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    });
+});
+</script>
+@endpush

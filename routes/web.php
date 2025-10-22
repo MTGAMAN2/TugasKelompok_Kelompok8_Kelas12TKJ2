@@ -32,22 +32,22 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 // Semua route ini butuh login
     Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('wallets', WalletController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('transactions', TransactionController::class);
+        Route::resource('wallets', WalletController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('transactions', TransactionController::class);
 
-    // Budget 
-    Route::resource('budgets', BudgetController::class)->only(['index','create','store','destroy']);
+        // Budget 
+        Route::resource('budgets', BudgetController::class)->only(['index','create','store','destroy']);
 
-    Route::resource('goals', GoalController::class);
+        Route::resource('goals', GoalController::class);
 
-    // Reports
-    Route::middleware(['auth'])->group(function () {
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
-    Route::get('/reports/export-csv', [ReportController::class, 'exportCsv'])->name('reports.exportCsv');
+        // Reports
+        Route::middleware(['auth'])->group(function () {
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
+        Route::get('/reports/export-csv', [ReportController::class, 'exportCsv'])->name('reports.exportCsv');
     });
     
     // Goals contribute

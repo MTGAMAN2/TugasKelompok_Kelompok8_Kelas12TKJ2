@@ -50,6 +50,7 @@ class TransactionController extends Controller
     {
         $userId = Auth::id();
 
+        
         $data = $request->validate([
             'wallet_id'   => 'required|exists:wallets,id',
             'category_id' => 'nullable|exists:categories,id',
@@ -59,14 +60,15 @@ class TransactionController extends Controller
             'transacted_at' => 'nullable|date',
         ]);
 
+        
         $wallet = Wallet::where('id', $data['wallet_id'])
-            ->where('user_id', $userId)
-            ->firstOrFail();
-
+        ->where('user_id', $userId)
+        ->firstOrFail();
+        
         if (!empty($data['category_id'])) {
             $category = Category::where('id', $data['category_id'])
-                ->where('user_id', $userId)
-                ->firstOrFail();
+            ->where('user_id', $userId)
+            ->firstOrFail();
         }
 
         $amount = preg_replace('/[^0-9]/', '', $data['amount']);

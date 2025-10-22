@@ -56,7 +56,7 @@
                     <div>
                         <label class="block text-sm mb-1">Saldo Awal</label>
                         <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input"
-                        type="text" name="balance">
+                        type="text" name="balance" required>
 
                     </div>
                     <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Create</button>
@@ -87,7 +87,7 @@
                     <div>
                         <label class="block text-sm mb-1">Jumlah</label>
                         <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input" 
-                        type="text" name="balance">
+                        type="text" name="amount" required>
 
                     </div>
                     <div>
