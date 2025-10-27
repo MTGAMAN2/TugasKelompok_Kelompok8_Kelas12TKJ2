@@ -5,7 +5,7 @@
 
             <!-- Judul -->
             <h2 class="text-4xl font-extrabold text-center text-white mb-8 drop-shadow-lg">
-                Create Account ✨
+                Create Account
             </h2>
 
             <form method="POST" action="{{ route('register') }}" class="grid grid-cols-1 gap-6">

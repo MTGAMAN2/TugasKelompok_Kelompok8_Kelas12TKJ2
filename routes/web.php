@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
-// ===== Auth Routes =====
+// Auth Routes 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');              
@@ -39,9 +39,9 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
         Route::resource('transactions', TransactionController::class);
 
         // Budget 
-        Route::resource('budgets', BudgetController::class)->only(['index','create','store','destroy']);
-
         Route::resource('goals', GoalController::class);
+        Route::resource('budgets', BudgetController::class);
+
 
         // Reports
         Route::middleware(['auth'])->group(function () {

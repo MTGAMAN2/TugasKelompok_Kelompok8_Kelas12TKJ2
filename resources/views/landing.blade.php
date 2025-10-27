@@ -10,7 +10,7 @@
 
     <!-- Navbar -->
     <nav class="flex justify-between items-center p-6 backdrop-blur-md bg-white/10 sticky top-0 z-50">
-        <h1 class="text-2xl font-bold tracking-wide">💸 MoneyWise</h1>
+        <h1 class="text-2xl font-bold tracking-wide">MoneyWise</h1>
         <div class="space-x-4">
             <a href="#features" class="hover:text-pink-300 transition">Features</a>
             <a href="#about" class="hover:text-pink-300 transition">About</a>

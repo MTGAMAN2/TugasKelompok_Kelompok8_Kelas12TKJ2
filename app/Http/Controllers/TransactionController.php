@@ -7,6 +7,7 @@ use App\Models\Wallet;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Budget;
 
 class TransactionController extends Controller
 {
@@ -85,7 +86,20 @@ class TransactionController extends Controller
         }
         $wallet->save();
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan!');
+    $budgets = Budget::where('user_id', auth()->id())
+    ->where('category_id', $data['category_id'])
+    ->get();
+
+foreach ($budgets as $b) {
+    $progress = $b->progress(); // method di model
+    if ($progress >= 100) {
+        session()->flash('warning', "Budget \"{$b->name}\" untuk kategori {$b->category->name} sudah melebihi limit ({$progress}%).");
+    } elseif ($progress >= $b->alert_threshold) {
+        session()->flash('info', "Budget \"{$b->name}\" mendekati limit ({$progress}%).");
+    }
+}
+
+    return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan!');
     }
 
     public function edit(Transaction $transaction)
