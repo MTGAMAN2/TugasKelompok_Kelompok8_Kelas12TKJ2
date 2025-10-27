@@ -4,73 +4,71 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use App\Models\Wallet;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class GoalController extends Controller
 {
     public function index()
     {
-        $goals = Goal::where('user_id', Auth::id())->get();
+        $goals = Goal::where('user_id', Auth::id())->with('category')->get();
         return view('goals.index', compact('goals'));
     }
 
     public function create()
     {
-        return view('goals.create');
+        $wallets = Wallet::where('user_id', Auth::id())->get();
+        return view('goals.create', compact('wallets'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
+            'name' => 'required|string',
             'target_amount' => 'required|numeric|min:1',
-            'deadline' => 'nullable|date'
+            'deadline' => 'nullable|date',
+            'priority' => 'required|string'
         ]);
 
         Goal::create([
             'user_id' => Auth::id(),
-            'title' => $request->title,
+            'name' => $request->name,
             'target_amount' => $request->target_amount,
-            'saved_amount' => 0,
-            'deadline' => $request->deadline
+            'deadline' => $request->deadline,
+            'priority' => $request->priority,
+            'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('goals.index')->with('success', 'Goal berhasil ditambahkan.');
+        return redirect()->route('goals.index')->with('success', 'Goal created successfully!');
     }
 
     public function contribute(Request $request, Goal $goal)
     {
         $request->validate([
-            'wallet_id' => 'required|exists:wallets,id',
-            'amount' => 'required|numeric|min:1'
+            'amount' => 'required|numeric|min:1',
+            'wallet_id' => 'required|exists:wallets,id'
         ]);
 
-        DB::transaction(function () use ($request, $goal) {
-            $wallet = Wallet::where('user_id', Auth::id())->findOrFail($request->wallet_id);
+        $wallet = Wallet::where('id', $request->wallet_id)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
 
-            if ($wallet->balance < $request->amount) {
-                abort(400, 'Saldo tidak cukup.');
-            }
+        if ($wallet->balance < $request->amount) {
+            return back()->with('error', 'Insufficient balance in wallet!');
+        }
 
-            // transaksi expense dari wallet
-            Transaction::create([
-                'wallet_id' => $wallet->id,
-                'amount' => $request->amount,
-                'type' => 'expense',
-                'description' => 'Contribute to goal: '.$goal->title
-            ]);
+        $wallet->balance -= $request->amount;
+        $wallet->save();
 
-            $wallet->decrement('balance', $request->amount);
-            $goal->increment('saved_amount', $request->amount);
+        $goal->increment('current_amount', $request->amount);
 
-            if ($goal->saved_amount >= $goal->target_amount) {
-                \Log::info("Goal {$goal->title} telah tercapai oleh user ".Auth::id());
-            }
-        });
-
-        return redirect()->route('goals.index')->with('success', 'Kontribusi berhasil.');
+        return redirect()->route('goals.index')->with('success', 'Contribution added successfully!');
     }
+
+    public function destroy(Goal $goal)
+    {
+        $goal->delete();
+        return back()->with('success', 'Goal deleted successfully.');
+    }
+    
 }

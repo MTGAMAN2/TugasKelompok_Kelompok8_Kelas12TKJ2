@@ -16,7 +16,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id', // tambahkan role_id agar bisa mass-assign
+        'role_id', 
     ];
 
     protected $hidden = [
@@ -29,11 +29,22 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Relasi ke Role
-     */
+    
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
+
+
+    public function wallets()
+{
+    return $this->hasMany(\App\Models\Wallet::class);
 }
+
+public function categories()
+{
+    return $this->hasMany(Category::class);
+}
+}
+
+

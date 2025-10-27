@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content-body')
 <div class="px-6 py-4">
     <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">💳 Wallets</h1>
 
@@ -23,7 +23,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input class="border rounded px-2 py-1 dark:bg-gray-900 dark:text-gray-100" 
-                                       type="text" name="name" value="{{ $w->name }}">
+                                        type="text" name="name" value="{{ $w->name }}">
                                 <button class="text-indigo-600 font-medium hover:underline">Save</button>
                             </form>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -31,7 +31,7 @@
                             </p>
                         </div>
                         <form method="POST" action="{{ route('wallets.destroy',$w) }}" 
-                              onsubmit="return confirm('Hapus wallet ini?')">
+                                onsubmit="return confirm('Hapus wallet ini?')">
                             @csrf @method('DELETE')
                             <button class="text-red-600 hover:underline">Hapus</button>
                         </form>
@@ -55,8 +55,9 @@
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Saldo Awal</label>
-                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" 
-                               type="number" step="0.01" name="balance">
+                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input"
+                        type="text" name="balance" required>
+
                     </div>
                     <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Create</button>
                 </form>
@@ -85,7 +86,9 @@
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Jumlah</label>
-                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" type="number" step="0.01" name="amount" required>
+                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input" 
+                        type="text" name="amount" required>
+
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Tanggal</label>
@@ -95,10 +98,37 @@
                         <label class="block text-sm mb-1">Catatan</label>
                         <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" name="note">
                     </div>
-                    <button class="w-full bg-purple-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Transfer</button>
+                    <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Transfer</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('.rupiah-input');
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+                e.target.value = 'Rp ' + value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            } else {
+                e.target.value = '';
+            }
+        });
+
+        const form = input.closest('form');
+        if (form) {
+            form.addEventListener('submit', function () {
+                input.value = input.value.replace(/[^0-9]/g, '');
+            });
+        }
+    });
+});
+</script>
+@endpush
+

@@ -5,7 +5,7 @@
 
             <!-- Judul -->
             <h2 class="text-4xl font-extrabold text-center text-white mb-8 drop-shadow-lg">
-                Welcome Back 👋
+                Welcome Back
             </h2>
 
             <!-- Session Status -->

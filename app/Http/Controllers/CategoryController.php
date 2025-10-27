@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -39,6 +40,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate(['name'=>'required|string|max:100']);
+        // assign the current user as owner (keeps categories scoped), and default type to 'expense'
+        $data['user_id'] = $request->user()->id ?? Auth::id();
+        $data['type'] = $request->get('type', 'expense');
         Category::create($data);
         return redirect()->route('categories.index')->with('success','Category created');
     }

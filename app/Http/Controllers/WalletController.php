@@ -50,7 +50,10 @@ public function transfer(Request $request)
     $from = Wallet::findOrFail($data['from_wallet_id']);
     $to   = Wallet::findOrFail($data['to_wallet_id']);
 
-    // Kurangi saldo wallet asal
+    if ($from->user_id !== Auth::id() || $to->user_id !== Auth::id()) {
+        abort(403, 'Kamu tidak memiliki akses ke salah satu wallet ini.');
+    }
+
     if ($from->balance < $data['amount']) {
         return back()->withErrors(['amount' => 'Saldo tidak cukup']);
     }
@@ -61,8 +64,8 @@ public function transfer(Request $request)
     $from->save();
     $to->save();
 
-    // Kalau mau simpan ke tabel transaksi
     \App\Models\Transaction::create([
+        'user_id'       => Auth::id(),
         'wallet_id'     => $from->id,
         'type'          => 'transfer',
         'amount'        => $data['amount'],
@@ -71,5 +74,41 @@ public function transfer(Request $request)
     ]);
 
     return back()->with('success', 'Transfer berhasil!');
+}
+
+public function edit(Wallet $wallet)
+{
+    if ($wallet->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized action.');
+    }
+    return view('wallets.form', compact('wallet'));
+}
+
+public function update(Request $request, Wallet $wallet)
+{
+    if ($wallet->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $request->validate([
+        'name' => 'required|string',
+        'balance' => 'nullable|numeric|min:0'
+    ]);
+
+    $wallet->update([
+        'name' => $request->name,
+    ]);
+
+    return redirect()->route('wallets.index')->with('success', 'Wallet berhasil diperbarui.');
+}
+
+public function destroy(Wallet $wallet)
+{
+    if ($wallet->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $wallet->delete();
+    return redirect()->route('wallets.index')->with('success', 'Wallet berhasil dihapus.');
 }
 }

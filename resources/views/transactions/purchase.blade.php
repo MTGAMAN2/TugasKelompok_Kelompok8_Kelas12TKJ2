@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title','🛒 Beli Barang')
 
-@section('content')
+@section('content-body')
 <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-    <h1 class="text-2xl font-bold mb-6 text-purple-600 dark:text-purple-400">🛒 Beli Barang</h1>
+    <h1 class="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">🛒 Beli Barang</h1>
 
     <form method="POST" action="{{ route('purchase.store') }}" class="grid md:grid-cols-2 gap-6">
       @csrf
@@ -31,7 +31,7 @@
       <!-- Amount -->
       <div>
         <label class="block text-sm font-medium mb-1">💰 Jumlah</label>
-        <input type="number" step="0.01" min="0.01" name="amount"
+        <input type="text" id="amountIndex" name="amount"
               class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600" required>
       </div>
 
@@ -51,10 +51,32 @@
 
       <!-- Submit -->
       <div class="md:col-span-2">
-        <button class="w-full px-5 py-3 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:opacity-90 text-white font-semibold shadow-lg">
-          ✅ Bayar & Potong Saldo
+        <button class="w-full px-5 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-teal-500 hover:opacity-90 text-white font-semibold shadow-lg">
+          Bayar
         </button>
       </div>
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('amountIndex');
+
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value) {
+            e.target.value = 'Rp ' + value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        } else {
+            e.target.value = '';
+        }
+    });
+
+    const form = input.closest('form');
+    form.addEventListener('submit', function () {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    });
+});
+</script>
+@endpush
