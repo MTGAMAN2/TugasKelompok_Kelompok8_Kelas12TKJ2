@@ -10,7 +10,7 @@
         @csrf
         @if($isEdit) @method('PUT') @endif
 
-        <!-- Wallet -->
+        
         <div>
             <label class="block mb-1 font-semibold">💳 Dompet <span class="text-red-500">*</span></label>
             <select name="wallet_id" required
@@ -24,7 +24,7 @@
             </select>
         </div>
 
-        <!-- Type -->
+        
         <div>
             <label class="block mb-1 font-semibold">📂 Jenis <span class="text-red-500">*</span></label>
             <select name="type" required
@@ -34,7 +34,7 @@
             </select>
         </div>
 
-        <!-- Amount -->
+        
         <div>
             <label class="block mb-1 font-semibold">💰 Jumlah (Rp) <span class="text-red-500">*</span></label>
             <input type="text" id="amount" name="amount"
@@ -43,14 +43,14 @@
                 placeholder="Rp 0">
         </div>
 
-        <!-- Description -->
+      
         <div>
             <label class="block mb-1 font-semibold">📝 Deskripsi</label>
             <textarea name="description" rows="3"
                 class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600">{{ $isEdit ? $transaction->description : old('description') }}</textarea>
         </div>
 
-        <!-- Actions -->
+        
         <div class="pt-4">
             <button type="submit"
                 class="px-5 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 text-white font-semibold shadow-lg">
@@ -66,7 +66,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('amount');
 
-    // Format input saat diketik menjadi Rp xxx.xxx
+   
     input.addEventListener('input', function (e) {
         let value = e.target.value.replace(/[^0-9]/g, '');
         if (value) {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Saat submit, kirim hanya angka ke backend
+   
     const form = input.closest('form');
     form.addEventListener('submit', function () {
         input.value = input.value.replace(/[^0-9]/g, '');

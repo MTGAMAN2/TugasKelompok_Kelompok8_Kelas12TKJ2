@@ -2,14 +2,19 @@
 @extends('layouts.app')
 
 @section('content-body')
-<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-    <h2 class="text-2xl font-bold mb-6 text-indigo-600 dark:text-purple-400">📑 Daftar Transaksi</h2>
 
-    <!-- Form Tambah -->
+@section('content-body')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+    <h2 class="text-2xl font-bold mb-6 text-indigo-600 dark:text-purple-400">
+        <i class="fas fa-list"></i> Daftar Transaksi
+    </h2>
+
+
     <form action="{{ route('transactions.store') }}" method="POST" class="grid md:grid-cols-5 gap-4 mb-6 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-inner">
         @csrf
         <div>
-            <label class="block text-sm font-medium mb-1">💳 Dompet</label>
+            <label class="block text-sm font-medium mb-1"><i class="fas fa-wallet"></i> Dompet</label>
             <select name="wallet_id" class="w-full rounded p-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" required>
                 <option value="">-- Pilih --</option>
                 @foreach($wallets as $wallet)
@@ -18,14 +23,14 @@
             </select>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">📂 Jenis</label>
+            <label class="block text-sm font-medium mb-1"><i class="fas fa-exchange-alt"></i> Jenis</label>
             <select name="type" class="w-full rounded p-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" required>
                 <option value="income">Pemasukan</option>
                 <option value="expense">Pengeluaran</option>
             </select>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">🏷 Kategori</label>
+            <label class="block text-sm font-medium mb-1"><i class="fas fa-tag"></i> Kategori</label>
             <select name="category_id" class="w-full rounded p-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" required>
                 <option value="">-- Pilih Kategori --</option>
                 @foreach($categories as $category)
@@ -34,7 +39,7 @@
             </select>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">💰 Jumlah</label>
+            <label class="block text-sm font-medium mb-1"><i class="fas fa-money-bill"></i> Jumlah</label>
             <input type="text" id="amountIndex" name="amount" class="w-full rounded p-2 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" placeholder="Rp 0" required>
         </div>
         <div class="flex items-end">
@@ -42,7 +47,7 @@
         </div>
     </form>
 
-    <!-- List Transactions -->
+
     <div class="overflow-x-auto">
         <table class="w-full border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
             <thead>
@@ -66,10 +71,14 @@
                     </td>
                     <td class="p-3">{{ $trx->description }}</td>
                     <td class="p-3 space-x-2">
-                        <a href="{{ route('transactions.edit', $trx->id) }}" class="text-blue-600 hover:underline">✏️ Edit</a>
+                        <a href="{{ route('transactions.edit', $trx->id) }}" class="text-blue-600 hover:underline">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
                         <form action="{{ route('transactions.destroy', $trx->id) }}" method="POST" class="inline">
                             @csrf @method('DELETE')
-                            <button type="submit" onclick="return confirm('Yakin hapus transaksi ini?')" class="text-red-600 hover:underline">🗑 Hapus</button>
+                            <button type="submit" onclick="return confirm('Yakin hapus transaksi ini?')" class="text-red-600 hover:underline">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
                         </form>
                     </td>
                 </tr>

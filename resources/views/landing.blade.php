@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-700 min-h-screen text-white flex flex-col">
 
-    <!-- Navbar -->
+
     <nav class="flex justify-between items-center p-6 backdrop-blur-md bg-white/10 sticky top-0 z-50">
         <h1 class="text-2xl font-bold tracking-wide">MoneyWise</h1>
         <div class="space-x-4">
@@ -22,7 +22,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+
     <section class="flex flex-col items-center justify-center flex-1 text-center px-6">
         <h2 class="text-5xl font-extrabold mb-6 leading-tight">
             Kelola Keuangan <span class="text-pink-400">Lebih Mudah</span> 
@@ -43,26 +43,6 @@
         </div>
     </section>
 
-    <!-- Features
-    <section id="features" class="py-20 px-6 bg-white/10 backdrop-blur-md">
-        <h3 class="text-3xl font-bold text-center mb-12">✨ Fitur Unggulan</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div class="p-6 bg-white/10 rounded-lg shadow-lg">
-                <h4 class="text-xl font-semibold mb-2">📊 Dashboard Pintar</h4>
-                <p class="text-gray-300">Lihat ringkasan keuanganmu dengan grafik interaktif dan detail.</p>
-            </div>
-            <div class="p-6 bg-white/10 rounded-lg shadow-lg">
-                <h4 class="text-xl font-semibold mb-2">💼 Multi Wallet</h4>
-                <p class="text-gray-300">Kelola banyak dompet atau rekening dalam satu aplikasi.</p>
-            </div>
-            <div class="p-6 bg-white/10 rounded-lg shadow-lg">
-                <h4 class="text-xl font-semibold mb-2">🎯 Goals & Budget</h4>
-                <p class="text-gray-300">Buat anggaran & tujuan finansial agar lebih terarah.</p>
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Footer -->
     <footer class="py-6 text-center text-gray-400">
         &copy; {{ date('Y') }} MoneyWise. All rights reserved.
     </footer>

@@ -3,13 +3,13 @@
 @section('content-body')
 <div class="space-y-6">
 
-  <!-- Header -->
+
   <div>
     <h1 class="text-2xl font-bold">Dashboard</h1>
     <p class="text-gray-600">Ringkasan keuangan bulan ini</p>
   </div>
 
-  <!-- small top stat cards -->
+
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <div class="card p-5">
       <div class="text-sm text-gray-500">Pemasukan Bulan Ini</div>
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <!-- Chart Section -->
+
   <div class="card big-round p-6">
     <div class="flex justify-between items-center mb-4">
       <div>
@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <!-- Top Categories -->
+ 
   <div class="card p-6">
     <h3 class="font-semibold text-gray-700 mb-3">Top Kategori Pengeluaran</h3>
     @if(empty($topCategories) || $topCategories->isEmpty())
@@ -74,7 +74,6 @@
 
 @push('scripts')
 <script>
-  // Line Chart (Arus Kas)
   const labels = {!! json_encode($chartLabels ?? ['Jan','Feb','Mar','Apr','May','Jun']) !!};
   const values = {!! json_encode($chartData ?? [120000,90000,150000,110000,180000,160000]) !!};
 
@@ -113,7 +112,6 @@
     });
   })();
 
-  // toggle Months / Years (dummy switch)
   document.getElementById('btn-months')?.addEventListener('click', ()=>{
     document.getElementById('btn-months').classList.add('bg-indigo-600','text-white');
     document.getElementById('btn-years').classList.remove('bg-indigo-600','text-white');

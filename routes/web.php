@@ -16,13 +16,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;    
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WalletController; 
-
-// Landing page (public)
 Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
-// Auth Routes 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');              
@@ -30,7 +27,6 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
-// Semua route ini butuh login
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -38,25 +34,19 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
         Route::resource('categories', CategoryController::class);
         Route::resource('transactions', TransactionController::class);
 
-        // Budget 
         Route::resource('goals', GoalController::class);
         Route::resource('budgets', BudgetController::class);
 
-
-        // Reports
         Route::middleware(['auth'])->group(function () {
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
         Route::get('/reports/export-csv', [ReportController::class, 'exportCsv'])->name('reports.exportCsv');
     });
-    
-    // Goals contribute
+
     Route::post('/goals/{goal}/contribute', [GoalController::class,'contribute'])->name('goals.contribute');
 
-    // Wallet transfer
     Route::post('wallets/transfer', [WalletController::class, 'transfer'])->name('wallets.transfer');
 
-    // Purchase → langsung potong saldo
     Route::get('/purchase', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
 
@@ -65,7 +55,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
     })->name('profile.index');
 
     Route::get('/settings', function () {
-    return view('settings.index'); // pastikan file ini ada
+    return view('settings.index'); 
     })->name('settings.index');
 
 

@@ -5,25 +5,25 @@
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold dark:text-white">Categories</h1>
         <a href="{{ route('categories.create') }}"
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Add Category
-        </a>
+    class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-purple-700">
+    <i class="fas fa-plus text-white mr-1"></i> Add Category
+</a>
     </div>
 
-    <!-- Filter -->
+
     <form class="bg-white dark:bg-gray-800 rounded shadow p-4 mb-6 grid grid-cols-1 md:grid-cols-4 gap-3">
         <input type="date" name="from" value="{{ $from }}"
             class="border rounded px-3 py-2 dark:bg-gray-700 dark:text-white dark:border-gray-600">
         <input type="date" name="to" value="{{ $to }}"
             class="border rounded px-3 py-2 dark:bg-gray-700 dark:text-white dark:border-gray-600">
-        <button class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900">Apply Range</button>
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-gray-900">Apply Range</button>
         <a href="{{ route('categories.index') }}"
         class="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600">
             Reset
         </a>
     </form>
 
-    <!-- Table -->
+  
     <div class="bg-white dark:bg-gray-800 rounded shadow overflow-x-auto">
         <table class="min-w-full text-sm">
             <thead class="bg-gray-50 dark:bg-gray-700">

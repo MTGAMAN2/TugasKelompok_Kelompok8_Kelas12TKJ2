@@ -4,10 +4,11 @@
 <div class="p-6  mx-auto">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold dark:text-white">My Goals</h1>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <a href="{{ route('goals.create') }}" 
-            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">
-            ➕ Create Goal
-        </a>
+    class="bg-indigo-600 hover:bg-indigo-800 text-white px-4 py-2 rounded shadow transition">
+    <i class="fas fa-plus text-white"></i> Create Goal
+</a>
     </div>
 
     <div class="space-y-6">

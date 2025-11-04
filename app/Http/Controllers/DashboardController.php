@@ -12,7 +12,6 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Ringkas bulan berjalan
         $start = now()->startOfMonth();
         $end   = now()->endOfMonth();
 
@@ -31,6 +30,27 @@ class DashboardController extends Controller
             ->whereBetween('transacted_at',[$start,$end])
             ->groupBy('categories.name')->orderByDesc('total')->limit(5)->get();
 
-        return view('dashboard.index', compact('income','expense','topCategories'));
+        $chartLabels = [];
+        $chartData = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $monthStart = now()->subMonths($i)->startOfMonth();
+            $monthEnd = now()->subMonths($i)->endOfMonth();
+            $monthName = $monthStart->format('M');
+
+            $monthlyIncome = Transaction::where('user_id', $user->id)
+                ->whereBetween('transacted_at', [$monthStart, $monthEnd])
+                ->where('type', 'income')->sum('amount');
+
+            $monthlyExpense = Transaction::where('user_id', $user->id)
+                ->whereBetween('transacted_at', [$monthStart, $monthEnd])
+                ->where('type', 'expense')->sum('amount');
+
+            $netCashFlow = $monthlyIncome - $monthlyExpense;
+
+            $chartLabels[] = $monthName;
+            $chartData[] = $netCashFlow;
+        }
+
+        return view('dashboard.index', compact('income','expense','topCategories','chartLabels','chartData'));
     }
 }

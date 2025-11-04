@@ -6,7 +6,6 @@
 
   <form action="{{ route('budgets.update', $budget) }}" method="POST" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
     @csrf @method('PUT')
-    <!-- same fields as create but fill values -->
     <div class="mb-3">
       <label class="block text-sm mb-1">Category</label>
       <select name="category_id" required class="w-full border rounded px-3 py-2 dark:bg-gray-900">

@@ -4,7 +4,7 @@
 <div class="container mx-auto px-4">
     <h1 class="text-2xl font-semibold mb-4">Reports</h1>
 
-    {{-- Filter Form --}}
+
     <form method="GET" action="{{ route('reports.index') }}" class="bg-white rounded shadow p-4 mb-6 grid md:grid-cols-4 gap-3">
         @php
             $year = $year ?? now()->year;
@@ -25,20 +25,20 @@
             @endfor
         </select>
 
-        {{-- Export CSV --}}
+
         <a href="{{ route('reports.exportCsv') }}"
            class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded text-center">
            Export CSV
         </a>
 
-        {{-- Print / Save as PDF --}}
+ 
         <a href="{{ route('reports.print', ['year' => $year, 'month' => $month]) }}" target="_blank"
            class="px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded text-center">
            Print / Save as PDF
         </a>
     </form>
 
-    {{-- Charts --}}
+
     <div class="grid md:grid-cols-2 gap-6">
         <div class="bg-white rounded shadow p-4">
             <h3 class="font-semibold mb-2">Income vs Expense ({{ $year }})</h3>
@@ -53,7 +53,6 @@
     </div>
 </div>
 
-{{-- Chart.js CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const monthly = @json($monthly ?? []);
@@ -81,4 +80,5 @@ new Chart(document.getElementById('pieChart'), {
   }
 });
 </script>
+
 @endsection

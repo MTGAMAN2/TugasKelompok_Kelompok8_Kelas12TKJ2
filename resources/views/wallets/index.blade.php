@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
 @section('content-body')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <div class="px-6 py-4">
-    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">💳 Wallets</h1>
-
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+        <i class="fas fa-wallet text-purple-500"></i> Wallets
+    </h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <!-- Wallet List -->
+       
         <div class="md:col-span-2 space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Daftar Wallet</h2>
@@ -42,30 +44,32 @@
             </div>
         </div>
 
-        <!-- Create + Transfer -->
+        
         <div class="space-y-6">
-            <!-- Create Wallet -->
+            
             <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow">
-                <h2 class="text-lg font-semibold mb-3">➕ Buat Wallet</h2>
-                <form method="POST" action="{{ route('wallets.store') }}" class="space-y-3">
-                    @csrf
-                    <div>
-                        <label class="block text-sm mb-1">Nama</label>
-                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" name="name" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm mb-1">Saldo Awal</label>
-                        <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input"
-                        type="text" name="balance" required>
-
-                    </div>
-                    <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Create</button>
-                </form>
-            </div>
-
-            <!-- Transfer -->
+    <h2 class="text-lg font-semibold mb-3">
+        <i class="fas fa-plus text-purple-500"></i> Buat Wallet
+    </h2>
+    <form method="POST" action="{{ route('wallets.store') }}" class="space-y-3">
+        @csrf
+        <div>
+            <label class="block text-sm mb-1">Nama</label>
+            <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100" name="name" required>
+        </div>
+        <div>
+            <label class="block text-sm mb-1">Saldo Awal</label>
+            <input class="w-full border rounded px-3 py-2 dark:bg-gray-900 dark:text-gray-100 rupiah-input"
+            type="text" name="balance" required>
+        </div>
+        <button class="w-full bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:opacity-90 transition">Create</button>
+    </form>
+</div>
+          
             <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow">
-                <h2 class="text-lg font-semibold mb-3">🔄 Transfer</h2>
+    <h2 class="text-lg font-semibold mb-3">
+        <i class="fas fa-exchange-alt text-purple-500"></i> Transfer
+    </h2>
                 <form method="POST" action="{{ route('wallets.transfer') }}" class="space-y-3">
                     @csrf
                     <div>

@@ -13,11 +13,9 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil bulan & tahun dari request, jika tidak ada pakai default saat ini
         $year = $request->input('year', now()->year);
         $month = $request->input('month', now()->month);
 
-        // Ambil transaksi berdasarkan bulan dan tahun
         $query = Transaction::with('wallet')
             ->whereHas('wallet', fn($q) => $q->where('user_id', Auth::id()))
             ->whereYear('created_at', $year)
@@ -25,8 +23,38 @@ class ReportController extends Controller
 
         $transactions = $query->latest()->get();
 
-        // Kirim variabel ke view
-        return view('reports.index', compact('transactions', 'year', 'month'));
+        $monthly = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $income = Transaction::whereHas('wallet', fn($q) => $q->where('user_id', Auth::id()))
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $m)
+                ->where('type', 'income')
+                ->sum('amount');
+
+            $expense = Transaction::whereHas('wallet', fn($q) => $q->where('user_id', Auth::id()))
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $m)
+                ->where('type', 'expense')
+                ->sum('amount');
+
+            $monthly[] = [
+                'month' => $m,
+                'income' => $income,
+                'expense' => $expense
+            ];
+        }
+
+        $category = Transaction::select('categories.name', \DB::raw('SUM(amount) as total'))
+            ->join('categories', 'categories.id', '=', 'transactions.category_id')
+            ->whereHas('wallet', fn($q) => $q->where('user_id', Auth::id()))
+            ->whereYear('transactions.created_at', $year)
+            ->whereMonth('transactions.created_at', $month)
+            ->where('transactions.type', 'expense')
+            ->groupBy('categories.name')
+            ->orderByDesc('total')
+            ->get();
+
+        return view('reports.index', compact('transactions', 'year', 'month', 'monthly', 'category'));
     }
 
     public function exportCsv()

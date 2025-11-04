@@ -31,7 +31,7 @@
   <div class="max-w-[1280px] mx-auto px-6 py-6">
     <div class="flex gap-6">
 
-      <!-- LEFT SIDEBAR -->
+
       <aside class="left w-64 bg-white rounded-2xl card p-6 flex flex-col">
         <div class="flex items-center gap-3 mb-6">
           <img src="{{ asset('logo.png') }}" alt="logo" class="w-10 h-10 rounded-lg" onerror="this.style.display='none'">
@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <!-- Navigation -->
+        
         <nav class="flex-1 space-y-2">
           <a href="{{ route('dashboard') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50">
             <i class="bi bi-speedometer2 text-indigo-600"></i>
@@ -81,7 +81,6 @@
           </a>
         </nav>
 
-        <!-- Logout -->
         <div class="mt-6">
           <form method="POST" action="{{ route('logout') }}">@csrf
             <button class="w-full px-3 py-2 rounded-lg bg-red-50 text-red-600 border border-red-100 hover:bg-red-100 flex items-center justify-center gap-2">
@@ -91,19 +90,14 @@
         </div>
       </aside>
 
-      <!-- CENTER MAIN -->
       <main class="flex-1">
-        <!-- Top Bar -->
         <div class="flex items-center justify-between mb-6">
-          <!-- Left: Search + Time -->
           <div class="flex items-center gap-4">
-            <!-- Search -->
             <div class="relative">
               <input type="search" placeholder="Search..." 
                 class="px-4 py-2 rounded-xl w-72 bg-white border border-transparent shadow-sm focus:ring-2 focus:ring-indigo-200">
               <i class="bi bi-search absolute right-3 top-2.5 text-gray-400"></i>
             </div>
-            <!-- Time -->
             <div class="flex items-center gap-2 px-3 py-2 bg-white shadow-sm rounded-xl">
               <i class="bi bi-clock text-indigo-600"></i>
               <span class="text-sm text-gray-600">{{ now()->format('H:i A, d M Y') }}</span>
@@ -112,7 +106,6 @@
 
         </div>
 
-        <!-- Greeting -->
         <div class="card glass big-round mb-6 flex items-center justify-between">
           <div>
             <h1 class="text-3xl font-bold text-indigo-700">Hello {{ Auth::user()->name }}</h1>
@@ -122,7 +115,6 @@
                alt="illustration" class="h-24 rounded-lg object-cover">
         </div>
 
-        <!-- Slot konten -->
         @yield('content-body')
       </main>
 

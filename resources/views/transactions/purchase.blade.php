@@ -8,7 +8,7 @@
     <form method="POST" action="{{ route('purchase.store') }}" class="grid md:grid-cols-2 gap-6">
       @csrf
 
-      <!-- Wallet -->
+      
       <div>
         <label class="block text-sm font-medium mb-1">💳 Dompet</label>
         <select name="wallet_id" class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600" required>
@@ -18,7 +18,7 @@
         </select>
       </div>
 
-      <!-- Category -->
+      
       <div>
         <label class="block text-sm font-medium mb-1">🏷 Kategori</label>
         <select name="category_id" class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600" required>
@@ -28,28 +28,28 @@
         </select>
       </div>
 
-      <!-- Amount -->
+     
       <div>
         <label class="block text-sm font-medium mb-1">💰 Jumlah</label>
         <input type="text" id="amountIndex" name="amount"
               class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600" required>
       </div>
 
-      <!-- Date -->
+    
       <div>
         <label class="block text-sm font-medium mb-1">📅 Tanggal</label>
         <input type="date" name="transacted_at" value="{{ now()->toDateString() }}"
               class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600" required>
       </div>
 
-      <!-- Note -->
+  
       <div class="md:col-span-2">
         <label class="block text-sm font-medium mb-1">📝 Catatan (opsional)</label>
         <input type="text" name="note"
               class="w-full rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600">
       </div>
 
-      <!-- Submit -->
+  
       <div class="md:col-span-2">
         <button class="w-full px-5 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-teal-500 hover:opacity-90 text-white font-semibold shadow-lg">
           Bayar

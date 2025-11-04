@@ -15,7 +15,6 @@ class CategoryController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
-        // Statistik pengeluaran per kategori (bulan ini, bisa diubah via query)
         $from = $request->get('from', now()->startOfMonth()->toDateString());
         $to   = $request->get('to', now()->endOfMonth()->toDateString());
 
@@ -40,7 +39,6 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate(['name'=>'required|string|max:100']);
-        // assign the current user as owner (keeps categories scoped), and default type to 'expense'
         $data['user_id'] = $request->user()->id ?? Auth::id();
         $data['type'] = $request->get('type', 'expense');
         Category::create($data);
@@ -58,8 +56,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        // Optional: cek transaksi terkait
-        // if ($category->transactions()->exists()) return back()->with('error','Category has transactions');
+        
         $category->delete();
         return back()->with('success','Category deleted');
     }
