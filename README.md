@@ -78,7 +78,7 @@ Instalasi & Cara Menjalankan:
 
 Clone Repository
 bash
-git clone https://github.com/your-repo-url.git
+git clone https://github.com/MTGAMAN2/TugasKelompok_Kelompok8_Kelas12TKJ2.git
 cd MoneyWise
 composer install
 npm install
